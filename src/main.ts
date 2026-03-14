@@ -3,7 +3,7 @@ import * as Data from "./data/main"
 
 function handleClick(event: MouseEvent): void {
 	console.log("Button clicked!");
-	play_music();
+	play_music(null);
 	// Optional: use the event object, e.g., to prevent default behavior
 	event.preventDefault();
 }
