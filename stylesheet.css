@@ -56,3 +56,10 @@ body {
     #about {
       margin: 1rem;
     }
+
+    #targetImage {
+        height: auto; /* Maintain aspect ratio */
+        cursor: crosshair; /* Indicate clickability */
+    /* Critical: Use border-box to include padding/borders in size calculations */
+    box-sizing: border-box;
+    }

@@ -26,8 +26,13 @@
 
     <section id="map">   <!-- MAP Stuff HERE!! -->
       <div class="classMap">
-	<img src="Images/earth.jpg" alt="World Map" usemap="#oceanMap">
+	<img id="targetImage" src="Images/earth.jpg" alt="World Map" usemap="#oceanMap">
       </div>
+
+      <div id="coordsDisplay" class="coords-display">
+        Coordinates (relative to displayed image): <span id="displayedCoords">--</span><br>
+        Coordinates (relative to original image): <span id="originalCoords">--</span>
+    </div>
     </section>
 
     <section id="about">
@@ -38,6 +43,6 @@
     </section>
   </main>
 
-  <script src="mainPage.js"></script>
+  <script src="out/main.js"></script>
 </body>
 </html>
