@@ -1,0 +1,57 @@
+body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      background-color: #222;
+      color: #fff;
+      z-index: 1000;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #fff;
+    }
+
+    main {
+      padding-top: 60px; /* space for fixed toolbar */
+    }
+
+    /* Fake map area */
+    #map {
+      height: 400px;
+      background-color: #ddd;
+      border: 1px solid #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem;
+      font-size: 1.5rem;
+    }
+
+    #about {
+      margin: 1rem;
+    }

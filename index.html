@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Map Page</title>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <nav class="nav-links">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="controls">
+      <label for="volume">Volume</label>
+      <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+      <button id="muteBtn">Mute</button>
+    </div>
+  </header>
+
+  <main>
+    <audio id="bgAudio" loop>
+      <!-- <source src="your-audio-file.mp3" type="audio/mpeg" /> -->
+    </audio>
+
+    <section id="map">   <!-- MAP Stuff HERE!! -->
+      <div>Map goes here</div>
+    </section>
+
+    <section id="about">
+      <h2>About</h2>
+      <p>Project created for SMATH HACKS 2026</p>
+      <h4>What is it?</h4> 
+      <p>This is a project that allows you to listen to procedurally generated music that uses current ocean data.</p>
+    </section>
+  </main>
+
+  <script src="mainPage.js"></script>
+</body>
+</html>
