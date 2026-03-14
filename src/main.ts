@@ -65,8 +65,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		const originalX = displayedX * scaleX;
 		const originalY = displayedY * scaleY;
 
+    function pixelToLatLon(x: number, y: number): { lat: number; lon: number } {
+      const width = 4095;
+      const height = 1946;
+
+      const lat = 90 - (y / height) * 180;
+      const lon = -180 + (x / width) * 360; 
+
+      return { lat, lon };
+    }
+    console.log(`Latitude: ${pixelToLatLon(originalX,originalY).lat}, Longitude: ${pixelToLatLon(originalX,originalY).lon}`);
+
+    originalCoordsElement.textContent = `Latitude: ${pixelToLatLon(originalX,originalY).lat}, Longitude: ${pixelToLatLon(originalX,originalY).lon}`;
 		// Update display
-		originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
+		//originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
 	Data.stream([0, 0], function(event: Data.EventType) {
