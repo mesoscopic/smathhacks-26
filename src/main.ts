@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		const target = event.target as HTMLImageElement;
 		if (!target) return;
 
-    const marker = document.getElementById('markerImage') as HTMLImageElement | null;
-    if (!marker) return;
+		const marker = document.getElementById('markerImage') as HTMLImageElement | null;
+		if (!marker) return;
 
 		// Get the image's position and size relative to the viewport
 		const rect = target.getBoundingClientRect();
@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const displayedX = event.clientX - rect.left;
 		const displayedY = event.clientY - rect.top;
 
-    marker.style.display = 'block';
-    marker.style.left = `${displayedX}px`;
-    marker.style.top  = `${displayedY+50}px`;
+		marker.style.display = 'block';
+		marker.style.left = `${displayedX}px`;
+		marker.style.top = `${displayedY + 50}px`;
 
 		// Round to 2 decimal places for readability
 		displayedCoordsElement.textContent = `X: ${displayedX.toFixed(2)}, Y: ${displayedY.toFixed(2)}`;
@@ -72,20 +72,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		const originalX = displayedX * scaleX;
 		const originalY = displayedY * scaleY;
 
-    function pixelToLatLon(x: number, y: number): { lat: number; lon: number } {
-      const width = 4095;
-      const height = 1946;
+		function pixelToLatLon(x: number, y: number): { lat: number; lon: number } {
+			const width = 4095;
+			const height = 1946;
 
-      const lat = 90 - (y / height) * 180;
-      const lon = -180 + (x / width) * 360; 
+			const lat = 90 - (y / height) * 180;
+			const lon = -180 + (x / width) * 360;
 
-      return { lat, lon };
-    }
-    console.log(`Latitude: ${pixelToLatLon(originalX,originalY).lat}, Longitude: ${pixelToLatLon(originalX,originalY).lon}`);
+			return { lat, lon };
+		}
+		console.log(`Latitude: ${pixelToLatLon(originalX, originalY).lat}, Longitude: ${pixelToLatLon(originalX, originalY).lon}`);
 
-    originalCoordsElement.textContent = `Latitude: ${pixelToLatLon(originalX,originalY).lat}, Longitude: ${pixelToLatLon(originalX,originalY).lon}`;
+		originalCoordsElement.textContent = `Latitude: ${pixelToLatLon(originalX, originalY).lat}, Longitude: ${pixelToLatLon(originalX, originalY).lon}`;
 		// Update display
-		//originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
+		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
 	Data.stream([0, 0], function(event: Data.EventType) {
