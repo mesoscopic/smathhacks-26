@@ -1,6 +1,7 @@
 import * as Tone from "tone";
+import {EventType} from "../data/main";
 
-export function play_music() {
+export function play_music(event: EventType) {
   const bass_synth = new Tone.Synth();
   const distortion = new Tone.Distortion(0.7).toDestination();
   bass_synth.connect(distortion);
