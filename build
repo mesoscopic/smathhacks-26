@@ -1,4 +1,0 @@
-#!/usr/bin/env nu
-
-npx tsc
-npx webpack ./out/main.js

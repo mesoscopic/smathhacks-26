@@ -1,8 +1,13 @@
 {
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "tone": "^15.1.22",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.0"
+  },
+  "dependencies": {
+    "ts-loader": "^9.5.4"
   }
 }
