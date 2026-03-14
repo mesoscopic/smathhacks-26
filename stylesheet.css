@@ -1,65 +1,74 @@
 body {
-      margin: 0;
-      font-family: sans-serif;
-    }
+	margin: 0;
+	font-family: sans-serif;
+}
 
-    /* Toolbar */
-    .toolbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1rem;
-      background-color: #222;
-      color: #fff;
-      z-index: 1000;
-    }
+/* Toolbar */
+.toolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 1rem;
+	background-color: #222;
+	color: #fff;
+	z-index: 1000;
+}
 
-    .nav-links a {
-      color: #fff;
-      text-decoration: none;
-      margin-right: 1rem;
-    }
+.nav-links a {
+	color: #fff;
+	text-decoration: none;
+	margin-right: 1rem;
+}
 
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
+.nav-links a:hover {
+	text-decoration: underline;
+}
 
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #fff;
-    }
-    
-    .classMap {
+.controls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: #fff;
+}
+
+.classMap {
 	width: 100%;
 	aspect-ratio: 2 / 1;
 	overflow: hidden;
-    }
-    
-    .classMap img {
+}
+
+.classMap img {
 	width: 100%;
 	height: 100%;
-	object-fit: cover;        /* fill div, crop if needed */
+	object-fit: cover;
+	/* fill div, crop if needed */
 	display: block;
-    }
+}
 
-    main {
-      padding-top: 60px; /* space for fixed toolbar */
-    }
+main {
+	padding-top: 60px;
+	/* space for fixed toolbar */
+}
 
-    #about {
-      margin: 1rem;
-    }
+#about {
+	margin: 1rem;
+}
 
-    #targetImage {
-        height: auto; /* Maintain aspect ratio */
-        cursor: crosshair; /* Indicate clickability */
-    /* Critical: Use border-box to include padding/borders in size calculations */
-    box-sizing: border-box;
-    }
+#targetImage {
+	height: auto;
+	/* Maintain aspect ratio */
+	cursor: crosshair;
+	/* Indicate clickability */
+	/* Critical: Use border-box to include padding/borders in size calculations */
+	box-sizing: border-box;
+}
+
+#markerImage {
+	transform: translate(-50%, -50%);
+	height: 50px;
+}
