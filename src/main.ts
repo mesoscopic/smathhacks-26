@@ -39,12 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		const target = event.target as HTMLImageElement;
 		if (!target) return;
 
+    const marker = document.getElementById('markerImage') as HTMLImageElement | null;
+    if (!marker) return;
+
 		// Get the image's position and size relative to the viewport
 		const rect = target.getBoundingClientRect();
 
 		// Calculate click coordinates relative to the image's top-left corner
 		const displayedX = event.clientX - rect.left;
 		const displayedY = event.clientY - rect.top;
+
+    marker.style.display = 'block';
+    marker.style.left = `${displayedX}px`;
+    marker.style.top  = `${displayedY+50}px`;
 
 		// Round to 2 decimal places for readability
 		displayedCoordsElement.textContent = `X: ${displayedX.toFixed(2)}, Y: ${displayedY.toFixed(2)}`;
