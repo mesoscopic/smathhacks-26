@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "out/"
+    "outDir": "out/",
+    "lib": [
+      "ES6",
+      "dom",
+    ],
+    "module": "es2015",
+    "moduleResolution": "node",
   },
   "include": [
     "src/*.ts"

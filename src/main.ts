@@ -1,5 +1,25 @@
-let message: string = "Hello World";
-console.log(message);
+import * as Tone from 'tone';
+
+const synth: Tone.Synth = new Tone.Synth().toDestination();
+
+
+// Define the function you want to call
+function handleClick(event: MouseEvent): void {
+    console.log("Button clicked!");
+    synth.triggerAttackRelease("C4", "4n");
+    // Optional: use the event object, e.g., to prevent default behavior
+    event.preventDefault(); 
+}
+
+// Wait for the DOM to fully load
+document.addEventListener('DOMContentLoaded', () => {
+    // Get the button element by its ID and add a 'click' event listener
+    const button = document.getElementById("myButton");
+    if (button) {
+        // Use addEventListener and pass the function reference
+        button.addEventListener('click', handleClick);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const image = document.getElementById('targetImage') as HTMLImageElement | null;

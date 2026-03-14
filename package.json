@@ -1,5 +1,8 @@
 {
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "tone": "^15.1.22",
+    "typescript": "^5.9.3",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.0"
   }
 }
