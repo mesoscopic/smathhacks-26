@@ -1,15 +1,17 @@
-import * as Events from "./events.ts";
-import { LatLng } from "./structs.ts";
+import * as Events from "./events";
+import { LatLng } from "./structs";
 
 export { Events }
 
-let dummyPoll: number | null = null
+type Timeout = ReturnType<typeof setInterval>
+
+let dummyPoll: Timeout | null = null
 
 const NOAA_API_ROOT = "https://www.ncei.noaa.gov/access/services/data/v1"
-let noaaPoll: number | null = null
+let noaaPoll: Timeout | null = null
 
 const OBIS_API_ROOT = "https://api.obis.org/v3"
-let obisPoll: number | null = null
+let obisPoll: Timeout | null = null
 
 let currentLocation: LatLng | null = null
 
@@ -29,8 +31,8 @@ export function pollLocation(location: LatLng) {
 	dummyPoll = setInterval(() => { pollDummy(currentLocation as LatLng); }, 100);
 }
 
-export interface EventType<T> {
-	data: T
+export interface EventType {
+	data: any
 }
 
 function pollDummy(location: LatLng) {
