@@ -1,31 +1,38 @@
+import * as Events from "./events.ts";
+import { LatLng } from "./structs.ts";
+
+export { Events }
+
+let dummyPoll: number | null = null
+
 const NOAA_API_ROOT = "https://www.ncei.noaa.gov/access/services/data/v1"
-let pollingNoaa = false
+let noaaPoll: number | null = null
 
 const OBIS_API_ROOT = "https://api.obis.org/v3"
-let pollingObis = false
+let obisPoll: number | null = null
+
+let currentLocation: LatLng | null = null
 
 let dataCallback: Function | null = null
 
 // Overrides previous callback.
-export function stream(callback: Function): void {
+export function stream(location: LatLng, callback: Function): void {
 	dataCallback = callback;
-	if (!pollingNoaa) startPollingNoaa();
-	//if (!pollingObis) startPollingObis();
+	pollLocation(location);
 }
 
-export type Event = {
-	type: EventType,
-	data: number
+export function pollLocation(location: LatLng) {
+	currentLocation = location;
+	if (dataCallback != null) dataCallback({ data: location } as Events.LocationEvent);
+
+	if (dummyPoll != null) clearInterval(dummyPoll);
+	dummyPoll = setInterval(() => { pollDummy(currentLocation as LatLng); }, 100);
 }
 
-export enum EventType {
-
+export interface EventType<T> {
+	data: T
 }
 
-function startPollingNoaa(): void {
-	pollingNoaa = true
-}
-
-function startPollingObis(): void {
-
+function pollDummy(location: LatLng) {
+	if (dataCallback != null) dataCallback({ data: Math.random() } as Events.DummyEvent);
 }
