@@ -22,10 +22,6 @@
   </header>
 
   <main>
-    <audio id="bgAudio" loop>
-      <!-- <source src="your-audio-file.mp3" type="audio/mpeg" /> -->
-    </audio>
-
     <section id="map"> <!-- MAP Stuff HERE!! -->
       <div class="classMap">
         <img id="targetImage" src="images/earth.jpg" alt="World Map" usemap="#oceanMap">
@@ -42,12 +38,20 @@
 
     <button id="myButton">Click me!</button>
 
+    <br><br><hr>
     <section id="about">
       <h2>About</h2>
       <p>Project created for SMATH HACKS 2026</p>
       <h4>What is it?</h4>
-      <p>This is a project that allows you to listen to procedurally generated music that uses current ocean data.</p>
+      <p>
+        This is a project that allows you to listen to procedurally generated music that uses current ocean data.
+      </p>
+      <h4>What data is used?</h4>
+      <p>
+        We are using NOAA buoy data to get us real-time wave information like wave height and wave direction, water temperatures, wind speeds and wind directions. 
+      </p>
     </section>
+    <br><hr><br>
   </main>
 
   <script type="module" src="dist/main.js" defer></script>
