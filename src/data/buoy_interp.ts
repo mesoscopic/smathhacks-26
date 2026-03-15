@@ -7,7 +7,7 @@ const MIN_WEIGHT = 0.1;
 export async function setup(buoyPositions: object, width: number, height: number) {
 	interpolator.setOutputSize(width, height);
 	for (const buoy in buoyPositions) {
-		interpolator.addSeed({ x: buoyPositions[buoy][0] + width / 2., y: buoyPositions[buoy][1] + height / 2., value: buoy });
+		interpolator.addSeed({ x: buoyPositions[buoy][1] + width / 2., y: buoyPositions[buoy][0] + height / 2., value: buoy });
 	}
 	interpolator._generateSeedCells();
 	console.log(interpolator)
@@ -15,7 +15,7 @@ export async function setup(buoyPositions: object, width: number, height: number
 
 function getWeights(position: LatLng): object {
 	const pixelCells = interpolator._generatePixelCells(
-		position[0] + interpolator._output.width / 2., position[1] + interpolator._output.height / 2.);
+		position[1] + interpolator._output.width / 2., position[0] + interpolator._output.height / 2.);
 	const areas = interpolator._seedCellCollection.getStolenAreaInfo(pixelCells);
 	const weights = {};
 	for (const i in areas) {
