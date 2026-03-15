@@ -1,22 +1,33 @@
 import * as Tone from "tone";
 import {EventType} from "../data/main";
+import {NewDataEvent, DummyEvent} from "../data/events";
+
+const chords: Record<string,string[]> = {
+  "E": ["E", "G#", "B"]
+}
+
+const a = new Tone.PolySynth();
+
+var a_note = "E";
+var a_tempo = 90;
+var a_octave = "1";
+
+var a_loop = new Tone.Loop((time) => {
+  a.triggerAttackRelease(chords[a_note].map((g) => g + a_octave), "4n", time);
+}, "4n");
+
+const reverb = new Tone.Reverb(1).toDestination();
+a.connect(reverb);
+
 
 export function play_music(event: EventType) {
-  const bass_synth = new Tone.Synth();
-  const distortion = new Tone.Distortion(0.7).toDestination();
-  bass_synth.connect(distortion);
+  if (event instanceof NewDataEvent) {
+    a_loop.start()
 
-  const treble_synth = new Tone.Synth().toDestination();
-
-  const bass_loop = new Tone.Loop((time) => {
-    bass_synth.triggerAttackRelease("G2", "4n", time);
-  }, "4n").start(0);
-  const treble_loop = new Tone.Loop((time) => {
-    treble_synth.triggerAttackRelease("D#4", "8n", time);
-  }, "4n").start("8n");
-
-  Tone.getTransport().start();
-
-  Tone.getTransport().bpm.rampTo(60,1);
-
+    Tone.getTransport().bpm.value = a_tempo;
+    Tone.getTransport().start();
+  } else if (event instanceof DummyEvent) {
+    a_octave = (event.data * 8).toPrecision(1);
+    console.log((event.data * 8).toPrecision(1));
+  }
 }

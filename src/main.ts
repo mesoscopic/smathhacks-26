@@ -1,9 +1,10 @@
 import { play_music } from "./music/main"
 import * as Data from "./data/main"
+import { NewDataEvent } from "./data/events";
 
 function handleClick(event: MouseEvent): void {
 	console.log("Button clicked!");
-	play_music(null);
+	play_music(new NewDataEvent);
 	// Optional: use the event object, e.g., to prevent default behavior
 	event.preventDefault();
 }
@@ -88,7 +89,4 @@ document.addEventListener('DOMContentLoaded', () => {
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
-	Data.stream([0, 0], function(event: Data.EventType) {
-		// replace with music event handler
-	});
-});
+	Data.stream([0, 0], play_music)});
