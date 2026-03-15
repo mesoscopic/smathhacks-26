@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 	const image = document.getElementById('targetImage') as HTMLImageElement | null;
-	const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;
+	//const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;
 	const originalCoordsElement = document.getElementById('originalCoords') as HTMLElement | null;
 	const marker = document.getElementById('markerImage') as HTMLImageElement | null;
 
-	if (!image || !displayedCoordsElement || !originalCoordsElement || !marker) {
+	if (!image  || !originalCoordsElement || !marker) {
 		console.error("One or more required elements are missing from the DOM.");
 		return;
 	}
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const displayedY = event.clientY - rect.top;
 
 		// Round to 2 decimal places for readability
-		displayedCoordsElement.textContent = `X: ${displayedX.toFixed(2)}, Y: ${displayedY.toFixed(2)}`;
+		//displayedCoordsElement.textContent = `X: ${displayedX.toFixed(2)}, Y: ${displayedY.toFixed(2)}`;
 
 		// Get original image dimensions (from the image file)
 		const originalWidth = target.naturalWidth;
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const moveHorizontallyBy = currentVectors[0] * 2; 
 			const moveVerticallyBy = currentVectors[1] * 2;
 
-			console.log(moveHorizontallyBy + " : " + moveVerticallyBy);
+			originalCoordsElement.textContent = `Latitude: ${lat}, Longitude: ${long}`;
 			moveSubToLocation((lat + moveVerticallyBy), (long + moveHorizontallyBy), scaleX, scaleY, false)
 		}
 	}

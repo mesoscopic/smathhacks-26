@@ -32,25 +32,35 @@
       </div>
 
       <div id="coordsDisplay" class="coords-display">
-        Coordinates (relative to displayed image): <span id="displayedCoords">--</span><br>
         <span id="originalCoords">--</span>
       </div>
     </section>
 
-    <!-- <button id="myButton">Click me!</button> -->
-
     <br><br><hr>
     <section id="about">
       <h2>About</h2>
-      <p>Project created for SMATH HACKS 2026</p>
+      <p>This project was created for SMATH HACKS 2026!</p>
       <h4>What is it?</h4>
       <p>
-        This is a project that allows you to listen to procedurally generated music that uses current ocean data.
+        This is a project that allows you to listen to procedurally generated music that uses oceanographic data.
+        It fetches data continuously to stay up to data and moves your location according to ocean currents to keep the music fresh.
       </p>
       <h4>What data is used?</h4>
       <p>
-        We are using NOAA buoy data to get us real-time wave information like wave height and wave direction, water temperatures, wind speeds and wind directions. 
+        We are using NOAA buoy data and NOAA CoastWatch data to get us real-time wave information like wave height and wave direction, water temperatures, wind speeds and wind directions. 
       </p>
+      <h4>What tools did we use?</h4>
+      <p><ol>We used: 
+        <li>HTML, CSS, and Typescript: to build the website. </li>
+        <li>Tone.js to synthesize the music. </li>
+        <li>Python to build the web server and fetch data through the APIs.</li>
+      </ol></p>
+      
+      <h4>Links:</h4>
+      <ul>
+        <li><a href="https://github.com/mesoscopic/smathhacks-26">Github</a></li>
+        <li><a href="https://devpost.com/software/ocean-waves#updates">Devpost</a></li>
+      </ul>
     </section>
     <br><hr><br>
   </main>
