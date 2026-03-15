@@ -23,6 +23,7 @@ var a_octave = "1";
 var a_loop = new Tone.Loop((time) => {
   // a.triggerAttackRelease(chords[key[progression[a_note]]].map((g) => g + a_octave), "8n", time);
   // 
+
   arpeggio(
     a,
     chords[key[progression[a_note]]].map((g) => g + a_octave),
@@ -48,8 +49,10 @@ export function play_music(event: Event) {
   case "new_data": 
     a_loop.start()
 
-    Tone.getTransport().bpm.value = a_tempo;
-    Tone.getTransport().start();
+  Tone.getTransport().start();
+
+  Tone.getTransport().bpm.value = a_tempo;
+    console.log(a_tempo);
   break
   case "dummy":
     a_octave = (event.random * 3 + 1).toPrecision(1);
@@ -61,6 +64,10 @@ export function play_music(event: Event) {
   break
   case "buoy":
     console.log("Buoy event", event.data);
+
+    a_tempo = 60 + Math.round(event.data.wavePeriod * 20);
+
+  Tone.getTransport().bpm.value = a_tempo;
   }
 }
 
