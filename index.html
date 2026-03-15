@@ -57,13 +57,12 @@
     <span>AI Chatbot</span>
     <button id="closeChat">×</button>
   </div>
-  <div class="chat-body">
-    <p> Hey there! What can I help you with today? <br>...</p>
-    <!-- Starts empty (says nothing) -->
+  <div id="chatBody" class="chat-body">
+    <p> Wave Support: Hey there! What can I help you with today? </p>
   </div>
   <div class="chat-footer">
-    <input type="text" id="chatInput" placeholder="Type a message..." disabled />
-    <button id="sendBtn" disabled>Send</button>
+    <input type="text" id="chatInput" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
   </div>
 </div>
 
@@ -150,6 +149,9 @@
   const chatBubble = document.getElementById('chatBubble');
   const chatWindow = document.getElementById('chatWindow');
   const closeChat = document.getElementById('closeChat');
+  const sendBtn = document.getElementById('sendBtn');  // Fixed: was 'send'
+  const input = document.getElementById('chatInput');   // Fixed: define it
+  const body = document.getElementById('chatBody');     // Fixed: define it
 
   chatBubble.addEventListener('mouseover', () => {
     chatWindow.classList.toggle('hidden');
@@ -158,6 +160,45 @@
   closeChat.addEventListener('click', () => {
     chatWindow.classList.add('hidden');
   });
+
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
+
+  function addMsg(text, who) {
+      const el = document.createElement('div');
+      el.className = 'cb-msg ' + who;
+      el.textContent = who +': ' +text;
+      body.appendChild(el);
+      body.scrollTop = body.scrollHeight;
+      return el;
+    }
+
+  function showTyping() {
+      const el = document.createElement('div');
+      el.className = 'cb-typing';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      body.appendChild(el);
+      body.scrollTop = body.scrollHeight;
+      return el;
+    }
+
+  function botReply() {
+    const typing = showTyping();
+    setTimeout(() => {
+      typing.remove();
+      addMsg("Sorry, I can't help with that at this moment. Please try again later…", 'Wave Support');
+    }, 1200);
+  }
+  function handleSend() {
+    const msg = input.value.trim();
+    if (!msg) return;
+    addMsg(msg, 'User');
+    input.value = '';
+    botReply();
+  }
+  sendBtn.addEventListener('click', handleSend);
+
 </script>
 
   <script type="module" src="dist/main.js" defer></script>
