@@ -159,9 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			requestAnimationFrame(animate);
 		}
+		currentMoving()
+	}
+	// await Data.getCurrentVector
+	async function currentMoving(){
+		console.log(await Data.getCurrentVector());
 	}
 
-	function currentMoving(){
-		
-	}
 });
