@@ -1,6 +1,5 @@
 import * as Tone from "tone";
-import {EventType} from "../data/main";
-import {NewDataEvent, DummyEvent, LocationEvent} from "../data/events";
+import {Event} from "../data/events";
 
 const chords: Record<string,string[]> = {
   "E": ["E", "G#", "B"]
@@ -20,17 +19,20 @@ const reverb = new Tone.Reverb(1).toDestination();
 a.connect(reverb);
 
 
-export function play_music(event: EventType) {
+export function play_music(event: Event) {
   console.log("Event Received");
-  if (event instanceof NewDataEvent) {
+  switch(event.type) {
+  case "new_data": 
     a_loop.start()
 
     Tone.getTransport().bpm.value = a_tempo;
     Tone.getTransport().start();
-  } else if (event instanceof DummyEvent) {
-    a_octave = (event.data * 8).toPrecision(1);
-    console.log((event.data * 8).toPrecision(1));
-  } else if (event instanceof LocationEvent) {
-    console.log("Location Event", event.data);
+  break
+  case "dummy":
+    a_octave = (event.random * 8).toPrecision(1);
+    console.log((event.random * 8).toPrecision(1));
+  break
+  case "location": 
+    console.log("Location Event", event.location);
   }
 }
