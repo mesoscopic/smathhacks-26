@@ -2,6 +2,9 @@ import { play_music } from "./music/main"
 import * as Data from "./data/main"
 
 let mapClicked = false;
+let mapWidth = 4096;
+let mapHeight = 1936;
+
 
 /*
 function handleClick(event: MouseEvent): void {
@@ -24,8 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	const image = document.getElementById('targetImage') as HTMLImageElement | null;
 	const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;
 	const originalCoordsElement = document.getElementById('originalCoords') as HTMLElement | null;
+	const marker = document.getElementById('markerImage') as HTMLImageElement | null;
 
-	if (!image || !displayedCoordsElement || !originalCoordsElement) {
+	if (!image || !displayedCoordsElement || !originalCoordsElement || !marker) {
 		console.error("One or more required elements are missing from the DOM.");
 		return;
 	}
@@ -45,19 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		const target = event.target as HTMLImageElement;
 		if (!target) return;
 
-		const marker = document.getElementById('markerImage') as HTMLImageElement | null;
-		if (!marker) return;
-
 		// Get the image's position and size relative to the viewport
 		const rect = target.getBoundingClientRect();
 
 		// Calculate click coordinates relative to the image's top-left corner
 		const displayedX = event.clientX - rect.left;
 		const displayedY = event.clientY - rect.top;
-
-		marker.style.display = 'block';
-		marker.style.left = `${displayedX}px`;
-		marker.style.top = `${displayedY + 50}px`;
 
 		// Round to 2 decimal places for readability
 		displayedCoordsElement.textContent = `X: ${displayedX.toFixed(2)}, Y: ${displayedY.toFixed(2)}`;
@@ -78,23 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
 		const originalX = displayedX * scaleX;
 		const originalY = displayedY * scaleY;
 
-		function pixelToLatLon(x: number, y: number): { lat: number; lon: number } {
-			const width = 4095;
-			const height = 1946;
+		function pixelToLatLong(x: number, y: number): { lat: number; long: number } {
 
-			const lat = 90 - (y / height) * 180;
-			const lon = -180 + (x / width) * 360;
+			const lat = 90 - (y / mapHeight) * 180;
+			const long = -180 + (x / mapWidth) * 360;
 
-			return { lat, lon };
+			return { lat, long };
 		}
-		const latitude = pixelToLatLon(originalX, originalY).lat
-		const longitude = pixelToLatLon(originalX, originalY).lon
+		const latitude = pixelToLatLong(originalX, originalY).lat
+		const longitude = pixelToLatLong(originalX, originalY).long
+
+		moveSubToLocation(latitude, longitude, scaleY, scaleX);
 
 		console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
 		if (!mapClicked) {
 			mapClicked = true;
-			Data.stream([latitude, longitude], play_music)
+			marker.style.display = 'block';
+			Data.stream([longitude, latitude], play_music)
 			play_music({ type: "new_data" });
 		}
 
@@ -102,8 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
-	function moveSubToLocation(): void {
-
+	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number): void {
+		lat = (((90 - lat) / 180) * mapHeight) / scaleY;
+		long = (((long + 180) / 360) * mapWidth) /scaleX;
+		marker.style.left = `${long}px`;
+		marker.style.top = `${lat +50}px`;
 
 	}
 
