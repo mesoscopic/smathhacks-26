@@ -3,12 +3,14 @@ import { LatLng } from "./structs";
 
 export { Events }
 
-type Timeout = ReturnType<typeof setInterval>
+type Timeout = ReturnType<typeof setTimeout>
 
+const DUMMY_POLL_TIME = 100
 let dummyPoll: Timeout | null = null
 
-const NOAA_API_ROOT = "https://www.ncei.noaa.gov/access/services/data/v1"
+const NOAA_API_ROOT = "https://www.ndbc.noaa.gov/data/realtime2"
 let noaaPoll: Timeout | null = null
+let buoys = {}
 
 const OBIS_API_ROOT = "https://api.obis.org/v3"
 let obisPoll: Timeout | null = null
@@ -18,17 +20,18 @@ let currentLocation: LatLng | null = null
 let dataCallback: Function | null = null
 
 // Overrides previous callback.
-export function stream(location: LatLng, callback: Function): void {
+export async function stream(location: LatLng, callback: Function) {
 	dataCallback = callback;
+	await getBuoyData();
 	pollLocation(location);
 }
 
 export function pollLocation(location: LatLng) {
 	currentLocation = location;
-	if (dataCallback != null) dataCallback({ data: location } as Events.LocationEvent);
+	if (dataCallback != null) dataCallback({ type: "location", location });
 
-	if (dummyPoll != null) clearInterval(dummyPoll);
-	dummyPoll = setInterval(() => { pollDummy(currentLocation as LatLng); }, 100);
+	if (dummyPoll != null) clearTimeout(dummyPoll);
+	dummyPoll = setTimeout(() => { pollDummy(currentLocation as LatLng); }, DUMMY_POLL_TIME);
 }
 
 export interface EventType {
@@ -36,5 +39,14 @@ export interface EventType {
 }
 
 function pollDummy(location: LatLng) {
-	if (dataCallback != null) dataCallback({ data: Math.random() } as Events.DummyEvent);
+	if (dataCallback != null) dataCallback({ type: "dummy", random: Math.random() });
+	setTimeout(() => { pollDummy(location) }, DUMMY_POLL_TIME);
+}
+
+async function getBuoyData() {
+	let buoysHTML = await fetch("https://www.ndbc.noaa.gov/data/realtime2/");
+	(await buoysHTML.text()).split("\n").filter((line: string) => line.includes("\.txt")).map((line: string) => line.match(/href=\"([A-Z0-9]+).txt\"/));
+}
+async function pollNOAA() {
+
 }
