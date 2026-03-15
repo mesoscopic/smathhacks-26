@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const originalCoordsElement = document.getElementById('originalCoords') as HTMLElement | null;
 	const marker = document.getElementById('markerImage') as HTMLImageElement | null;
 
-	if (!image  || !originalCoordsElement || !marker) {
+	if (!image || !originalCoordsElement || !marker) {
 		console.error("One or more required elements are missing from the DOM.");
 		return;
 	}
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		originalCoordsElement.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
-		
+
 
 		function moveSubToLocation(lat: number, long: number, scaleX: number, scaleY: number, isClick: boolean): void {
 			Data.pollLocation([lat, long]);
@@ -139,16 +139,16 @@ document.addEventListener('DOMContentLoaded', () => {
 				// Calculate distance left
 				const deltaTop = (lat + 50) - currentTop;
 				const deltaLeft = long - currentLeft;
-				
+
 				// Flips Sub Marine
-				if(0> deltaLeft) marker.style.transform = 'scaleX(-1)';
-				else marker.style.transform = 'scaleX(1)';
+				if (0 > deltaLeft) marker.style.transform = 'translate(-50%, -50%) scaleX(-1)';
+				else marker.style.transform = 'translate(-50%, -50%) scaleX(1)';
 
 				// Stop if close enough
 				if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
 					marker.style.top = `${lat + 50}px`;
 					marker.style.left = `${long}px`;
-					
+
 					currentMoving()
 
 					return;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		}
 
-		async function currentMoving(){
+		async function currentMoving() {
 			const currentVectors = await Data.getCurrentVector();
 
 			let currentLeft = parseFloat(marker.style.left) || 0;
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 			// These are exagerated values
-			const moveHorizontallyBy = currentVectors[0] * 2; 
+			const moveHorizontallyBy = currentVectors[0] * 2;
 			const moveVerticallyBy = currentVectors[1] * 2;
 
 			originalCoordsElement.textContent = `Latitude: ${lat}, Longitude: ${long}`;
