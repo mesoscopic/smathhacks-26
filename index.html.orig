@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Ocean Waves</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+
+  <script>
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+</script>
+</head>
+
+<body>
+  <header class="toolbar">
+    <nav class="nav-links">
+      <a href="#map">Map</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="controls">
+      <label for="volume1">Volume</label>
+      <input type="range" id="volume" min="-50" max="0" step="0.01" value="-8" />
+      <button id="muteBtn">Unmuted</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="map"> <!-- MAP Stuff HERE!! -->
+      <div class="classMap">
+        <div>
+          <img id="targetImage" src="images/earth.jpg" alt="World Map" usemap="#oceanMap">
+          <canvas id="waveform" style="position: absolute; bottom: 0; left: 0;"></canvas>
+        </div>
+        <img id="markerImage" src="images/Submarine.png" alt="Marker"
+          style="position: absolute; left: 0; top: 0; display: none; pointer-events: none;" />
+      </div>
+
+      <div id="coordsDisplay" class="coords-display">
+        <span id="originalCoords">--</span>
+      </div>
+    </section>
+
+<<<<<<< HEAD
+    <br><br><hr>
+=======
+
+    <!-- <button id="myButton">Click me!</button> -->
+
+    <br><br>
+    <hr>
+>>>>>>> a05fe63 (added visualizer)
+    <section id="about">
+      <h2>About</h2>
+      <p>This project was created for SMATH HACKS 2026!</p>
+      <h4>What is it?</h4>
+      <p>
+        This is a project that allows you to listen to procedurally generated music that uses oceanographic data.
+        It fetches data continuously to stay up to data and moves your location according to ocean currents to keep the music fresh.
+      </p>
+      <h4>What data is used?</h4>
+      <p>
+<<<<<<< HEAD
+        We are using NOAA buoy data and NOAA CoastWatch data to get us real-time wave information like wave height and wave direction, water temperatures, wind speeds and wind directions. 
+=======
+        We are using NOAA buoy data to get us real-time wave information like wave height and wave direction, water
+        temperatures, wind speeds and wind directions.
+>>>>>>> a05fe63 (added visualizer)
+      </p>
+      <h4>What tools did we use?</h4>
+      <p><ol>We used: 
+        <li>HTML, CSS, and Typescript: to build the website. </li>
+        <li>Tone.js to synthesize the music. </li>
+        <li>Python to build the web server and fetch data through the APIs.</li>
+      </ol></p>
+      
+      <h4>Links:</h4>
+      <ul>
+        <li><a href="https://github.com/mesoscopic/smathhacks-26">Github</a></li>
+        <li><a href="https://devpost.com/software/ocean-waves#updates">Devpost</a></li>
+      </ul>
+    </section>
+    <br>
+    <hr><br>
+  </main>
+
+  <script type="module" src="dist/main.js" defer></script>
+</body>
+
+</html>
