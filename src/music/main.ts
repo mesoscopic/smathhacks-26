@@ -21,9 +21,17 @@ var a_tempo = 90;
 var a_octave = "1";
 
 var a_loop = new Tone.Loop((time) => {
-  a.triggerAttackRelease(chords[key[progression[a_note]]].map((g) => g + a_octave), "8n", time);
+  // a.triggerAttackRelease(chords[key[progression[a_note]]].map((g) => g + a_octave), "8n", time);
+  // 
+  arpeggio(
+    a,
+    chords[key[progression[a_note]]].map((g) => g + a_octave),
+    0.05,
+    time,
+    "4n",
+  )
   a_note = (a_note + 1) % progression.length;
-}, "4n");
+}, "2n");
 
 const reverb = new Tone.Reverb(0.3);
 a.connect(reverb);
@@ -50,5 +58,14 @@ export function play_music(event: Event) {
   break
   case "location": 
     // console.log("Location Event", event.location);
+  break
+  case "buoy":
+    console.log("Buoy event", event.data);
+  }
+}
+
+function arpeggio(syn: any, chord: string[], delay: number, time: any, note_len: string) {
+  for (let i = 0; i < chord.length; i++) {
+    syn.triggerAttackRelease(chord[i], note_len, time + (delay * i));
   }
 }
