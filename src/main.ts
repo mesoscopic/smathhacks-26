@@ -160,4 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			requestAnimationFrame(animate);
 		}
 	}
+
+	function currentMoving(){
+		
+	}
 });
