@@ -18,6 +18,7 @@ const chord_synth = new Tone.PolySynth();
 var chord_progression = [0, 2, 4, 2, 0, 4, 6, 4];
 var chord = 0;
 var octave = 4;
+var arpeggio_length = 0.15;
 
 var tempo = 90;
 
@@ -25,7 +26,7 @@ var chord_loop = new Tone.Loop((time) => {
 	arpeggio(
 		chord_synth,
 		chords[key[chord_progression[chord]]].map((g) => g + octave),
-		0.15,
+		arpeggio_length,
 		time,
 		"4n.",
 	)
@@ -41,17 +42,23 @@ reverb.connect(delay);
 const distortion = new Tone.Distortion(0.15);
 delay.connect(distortion);
 const toneVolume = new Tone.Volume().toDestination();
-reverb.connect(toneVolume);
-distortion.connect(toneVolume);
+const lowpass = new Tone.Filter(2000, "lowpass")
+distortion.connect(lowpass);
+reverb.connect(lowpass);
+lowpass.connect(toneVolume);
 
-
-
+const wave_noise = new Tone.Noise("brown");
+wave_noise.set({ volume: -15, fadeIn: 1, fadeOut: 1 });
+const tremolo = new Tone.Tremolo(2, 1);
+wave_noise.connect(tremolo);
+tremolo.connect(toneVolume);
 
 export function play_music(event: Event) {
 	// console.log("Event Received");
 	switch (event.type) {
 		case "new_data":
 			chord_loop.start()
+			wave_noise.start()
 			Tone.getTransport().bpm.value = tempo;
 			Tone.getTransport().start();
 			break
@@ -60,18 +67,22 @@ export function play_music(event: Event) {
 			toneVolume.volume.value = volume + 10;
 			// console.log((event.random * 3 + 1).toPrecision(1));
 			break
-		case "location":
-			// console.log("Location Event", event.location);
+		case "current":
+			const length = Math.sqrt(event.vector[0] ** 2 + event.vector[1] ** 2)
+			tempo = Math.round(length * 200);
+			Tone.getTransport().bpm.value = tempo;
+			delay.set({ delayTime: "3n" })
 			break
 		case "buoy":
 			console.log("Buoy event", event.data);
-			tempo = 60 + Math.round(event.data.wavePeriod * 20);
-			Tone.getTransport().bpm.value = tempo;
-			delay.set({ delayTime: "3n" })
+			vibrato.set({ depth: event.data.missingCount * 0.05, frequency: 1 / event.data.wavePeriod });
+			tremolo.set({ frequency: 1 / event.data.wavePeriod })
 
 			key = rotateArray(key, Math.round(event.data.waterTemperature * 10) % 7);
+			octave = 2 + Math.round(event.data.waterTemperature / 10)
+			arpeggio_length = event.data.wavePeriod / 8.;
 
-			console.log(key);
+			wave_noise.set({ volume: -15 + event.data.waveHeight * 2 });
 	}
 }
 
