@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 import {EventType} from "../data/main";
-import {NewDataEvent, DummyEvent} from "../data/events";
+import {NewDataEvent, DummyEvent, LocationEvent} from "../data/events";
 
 const chords: Record<string,string[]> = {
   "E": ["E", "G#", "B"]
@@ -13,7 +13,7 @@ var a_tempo = 90;
 var a_octave = "1";
 
 var a_loop = new Tone.Loop((time) => {
-  a.triggerAttackRelease(chords[a_note].map((g) => g + a_octave), "4n", time);
+  a.triggerAttackRelease(chords[a_note].map((g) => g + a_octave), "8n", time);
 }, "4n");
 
 const reverb = new Tone.Reverb(1).toDestination();
@@ -21,6 +21,7 @@ a.connect(reverb);
 
 
 export function play_music(event: EventType) {
+  console.log("Event Received");
   if (event instanceof NewDataEvent) {
     a_loop.start()
 
@@ -29,5 +30,7 @@ export function play_music(event: EventType) {
   } else if (event instanceof DummyEvent) {
     a_octave = (event.data * 8).toPrecision(1);
     console.log((event.data * 8).toPrecision(1));
+  } else if (event instanceof LocationEvent) {
+    console.log("Location Event", event.data);
   }
 }
