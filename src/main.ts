@@ -130,9 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			animate()
 		}
 		else {
-			const speed = 0.1;
-			console.log(isClick)
-			animate()
+			marker.style.top = `${lat + 50}px`;
+			marker.style.left = `${long}px`;
 		}
 
 		function animate() {
