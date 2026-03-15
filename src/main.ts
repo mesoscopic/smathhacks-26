@@ -16,6 +16,13 @@ function handleClick(event: MouseEvent): void {
 }
 */
 
+function pixelToLatLong(x: number, y: number): { lat: number; long: number } {
+	const lat = 90 - (y / mapHeight) * 180;
+	const long = -180 + (x / mapWidth) * 360;
+
+	return { lat, long };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
 	let isMuted = false;
@@ -89,81 +96,101 @@ document.addEventListener('DOMContentLoaded', () => {
 		const originalX = displayedX * scaleX;
 		const originalY = displayedY * scaleY;
 
-		function pixelToLatLong(x: number, y: number): { lat: number; long: number } {
-
-			const lat = 90 - (y / mapHeight) * 180;
-			const long = -180 + (x / mapWidth) * 360;
-
-			return { lat, long };
-		}
 		const latitude = pixelToLatLong(originalX, originalY).lat
 		const longitude = pixelToLatLong(originalX, originalY).long
 
-		moveSubToLocation(latitude, longitude, scaleY, scaleX, true);
+		moveSubToLocation(latitude, longitude, scaleX, scaleY, true);
 
 		//console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
 		if (!mapClicked) {
 			mapClicked = true;
 			marker.style.display = 'block';
+			currentMoving()
 			Data.stream([longitude, latitude], play_music)
 			play_music({ type: "new_data" });
 		}
 
 		originalCoordsElement.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
-	}
+		
 
-	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number, isClick: boolean): void {
-		Data.pollLocation([lat, long]);
+		function moveSubToLocation(lat: number, long: number, scaleX: number, scaleY: number, isClick: boolean): void {
+			Data.pollLocation([lat, long]);
 
-		lat = (((90 - lat) / 180) * mapHeight) / scaleY;
-		long = (((long + 180) / 360) * mapWidth) / scaleX;
+			lat = (((90 - lat) / 180) * mapHeight) / scaleY;
+			long = (((long + 180) / 360) * mapWidth) / scaleX;
 
-		let currentLeft = parseFloat(marker.style.left) || 0;
-		let currentTop = parseFloat(marker.style.top) || 0;
+			let currentLeft = parseFloat(marker.style.left) || 0;
+			let currentTop = parseFloat(marker.style.top) || 0;
 
-		const speed = 0.01;
-
-		if (!isClick) {
 			const speed = 0.01;
-			animate()
-		}
-		else {
-			marker.style.top = `${lat + 50}px`;
-			marker.style.left = `${long}px`;
-		}
 
-		function animate() {
-			// Calculate distance left
-			const deltaTop = (lat + 50) - currentTop;
-			const deltaLeft = long - currentLeft;
-			
-			// Flips Sub Marine
-			if(0> deltaLeft) marker.style.transform = 'scaleX(-1)';
-			else marker.style.transform = 'scaleX(1)';
-
-			// Stop if close enough
-			if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
+			if (!isClick) {
+				animate()
+			}
+			else {
 				marker.style.top = `${lat + 50}px`;
 				marker.style.left = `${long}px`;
-				return;
+				//currentMoving()
 			}
 
-			// Move fractionally toward target
-			currentTop += deltaTop * speed;
-			currentLeft += deltaLeft * speed;
+			function animate() {
+				// Calculate distance left
+				const deltaTop = (lat + 50) - currentTop;
+				const deltaLeft = long - currentLeft;
+				
+				// Flips Sub Marine
+				if(0> deltaLeft) marker.style.transform = 'scaleX(-1)';
+				else marker.style.transform = 'scaleX(1)';
 
-			marker.style.top = `${currentTop}px`;
-			marker.style.left = `${currentLeft}px`;
+				// Stop if close enough
+				if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
+					marker.style.top = `${lat + 50}px`;
+					marker.style.left = `${long}px`;
+					
+					currentMoving()
 
-			requestAnimationFrame(animate);
+					return;
+				}
+
+				// Move fractionally toward target
+				currentTop += deltaTop * speed;
+				currentLeft += deltaLeft * speed;
+
+				marker.style.top = `${currentTop}px`;
+				marker.style.left = `${currentLeft}px`;
+
+				requestAnimationFrame(animate);
+			}
 		}
-		currentMoving()
-	}
-	// await Data.getCurrentVector
-	async function currentMoving(){
-		console.log(await Data.getCurrentVector());
-	}
 
+		async function currentMoving(){
+			const currentVectors = await Data.getCurrentVector();
+
+			let currentLeft = parseFloat(marker.style.left) || 0;
+			let currentTop = parseFloat(marker.style.top) || 0;
+
+			const displayedWidth = image.offsetWidth;
+			const displayedHeight = image.offsetHeight;
+			const originalWidth = image.naturalWidth;
+			const originalHeight = image.naturalHeight;
+			const scaleX = originalWidth / displayedWidth;
+			const scaleY = originalHeight / displayedHeight;
+
+			const originalX = currentLeft * scaleX;
+			const originalY = (currentTop - 50) * scaleY;
+
+			let lat = pixelToLatLong(originalX, originalY).lat;
+			let long = pixelToLatLong(originalX, originalY).long;
+
+
+			// These are exagerated values
+			const moveHorizontallyBy = currentVectors[0] * 2; 
+			const moveVerticallyBy = currentVectors[1] * 2;
+
+			console.log(moveHorizontallyBy + " : " + moveVerticallyBy);
+			moveSubToLocation((lat + moveVerticallyBy), (long + moveHorizontallyBy), scaleX, scaleY, false)
+		}
+	}
 });
