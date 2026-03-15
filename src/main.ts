@@ -117,9 +117,46 @@ document.addEventListener('DOMContentLoaded', () => {
 	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number): void {
 		lat = (((90 - lat) / 180) * mapHeight) / scaleY;
 		long = (((long + 180) / 360) * mapWidth) /scaleX;
-		marker.style.left = `${long}px`;
-		marker.style.top = `${lat +50}px`;
 
+		let currentLeft = parseFloat(marker.style.left) || 0;
+		let currentTop = parseFloat(marker.style.top) || 0;
+		
+		const speed = 0.01;
+		console.log(`Current1: ${currentLeft}, current2: ${currentTop}`)
+
+
+		if (true){
+			animate()
+		}
+		else{
+			marker.style.left = `${long}px`;
+			marker.style.top = `${lat +50}px`;
+		}
+
+		function animate() {
+			// Calculate distance left
+			const deltaTop = (lat+50) - currentTop;
+			const deltaLeft = long - currentLeft;
+
+			// Stop if close enough
+			if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
+				marker.style.top = `${lat+50}px`;
+				marker.style.left = `${long}px`;
+				return;
+			}
+
+			// Move fractionally toward target
+			currentTop += deltaTop * speed;
+			currentLeft += deltaLeft * speed;
+
+			marker.style.top = `${currentTop}px`;
+			marker.style.left = `${currentLeft}px`;
+
+			requestAnimationFrame(animate);
+		}
 	}
+
+
+
 
 });
