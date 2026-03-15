@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const latitude = pixelToLatLong(originalX, originalY).lat
 		const longitude = pixelToLatLong(originalX, originalY).long
 
-		moveSubToLocation(latitude, longitude, scaleY, scaleX);
+		moveSubToLocation(latitude, longitude, scaleY, scaleX, true);
 
 		//console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
-	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number): void {
+	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number, isClick: boolean): void {
 		Data.pollLocation([lat, long]);
 
 		lat = (((90 - lat) / 180) * mapHeight) / scaleY;
@@ -125,19 +125,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const speed = 0.01;
 
-		if (true) {
+		if (!isClick) {
+			const speed = 0.01;
 			animate()
 		}
 		else {
-			marker.style.left = `${long}px`;
-			marker.style.top = `${lat + 50}px`;
+			const speed = 0.1;
+			console.log(isClick)
+			animate()
 		}
 
 		function animate() {
 			// Calculate distance left
 			const deltaTop = (lat + 50) - currentTop;
 			const deltaLeft = long - currentLeft;
-			console.log(deltaLeft);
+			
+			// Flips Sub Marine
 			if(0> deltaLeft) marker.style.transform = 'scaleX(-1)';
 			else marker.style.transform = 'scaleX(1)';
 
@@ -152,16 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			currentTop += deltaTop * speed;
 			currentLeft += deltaLeft * speed;
 
-			
-
 			marker.style.top = `${currentTop}px`;
 			marker.style.left = `${currentLeft}px`;
 
 			requestAnimationFrame(animate);
 		}
 	}
-
-
-
-
 });
