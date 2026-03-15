@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		moveSubToLocation(latitude, longitude, scaleY, scaleX);
 
-		console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+		//console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
 		if (!mapClicked) {
 			mapClicked = true;
@@ -124,8 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		let currentTop = parseFloat(marker.style.top) || 0;
 
 		const speed = 0.01;
-		console.log(`Current1: ${currentLeft}, current2: ${currentTop}`)
-
 
 		if (true) {
 			animate()
@@ -139,6 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			// Calculate distance left
 			const deltaTop = (lat + 50) - currentTop;
 			const deltaLeft = long - currentLeft;
+			console.log(deltaLeft);
+			if(0> deltaLeft) marker.style.transform = 'scaleX(-1)';
+			else marker.style.transform = 'scaleX(1)';
 
 			// Stop if close enough
 			if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
@@ -150,6 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			// Move fractionally toward target
 			currentTop += deltaTop * speed;
 			currentLeft += deltaLeft * speed;
+
+			
 
 			marker.style.top = `${currentTop}px`;
 			marker.style.left = `${currentLeft}px`;
