@@ -4,7 +4,7 @@ import * as Data from "./data/main"
 let mapClicked = false;
 let mapWidth = 4096;
 let mapHeight = 1936;
-var volume = -8;
+export var volume = -8;
 
 
 /*
@@ -17,19 +17,26 @@ function handleClick(event: MouseEvent): void {
 */
 
 document.addEventListener('DOMContentLoaded', () => {
-	/*
-	const button = document.getElementById("myButton");
-	if (button) {
-		// Use addEventListener and pass the function reference
-		button.addEventListener('click', handleClick);
-	}
-	*/
 
-	let volumeSlider = document.getElementById('volume') as HTMLInputElement | null;
+	let isMuted = false;
+	const muteButton = document.getElementById("muteBtn");
+	muteButton.addEventListener('click', function() {
+		if(!isMuted){
+			volume = -50;
+			muteButton.textContent = "Muted";
+		}
+		else {
+			volume = volumeSlider.valueAsNumber;
+			muteButton.textContent = "Unmuted";
+		}
+		isMuted = !isMuted
+	});
+
+	const volumeSlider = document.getElementById('volume') as HTMLInputElement | null;
 	volumeSlider.addEventListener("change", function() {
 		volume = volumeSlider.valueAsNumber;
-		console.log (volume);
-	})
+	});
+
 
 	const image = document.getElementById('targetImage') as HTMLImageElement | null;
 	const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;
