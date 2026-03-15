@@ -4,6 +4,7 @@ import * as Data from "./data/main"
 let mapClicked = false;
 let mapWidth = 4096;
 let mapHeight = 1936;
+var volume = -8;
 
 
 /*
@@ -23,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		button.addEventListener('click', handleClick);
 	}
 	*/
+
+	let volumeSlider = document.getElementById('volume') as HTMLInputElement | null;
+	volumeSlider.addEventListener("change", function() {
+		volume = volumeSlider.valueAsNumber;
+		console.log (volume);
+	})
 
 	const image = document.getElementById('targetImage') as HTMLImageElement | null;
 	const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;

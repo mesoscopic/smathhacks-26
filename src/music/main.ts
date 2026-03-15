@@ -18,11 +18,14 @@ var a_note = 0;
 var progression = [0,1,2,3,4,5,6];
 var a_tempo = 90;
 var a_octave = "1";
+export var a_volume = -8;  // Volume is weird AF, why is quiet -30 and 0 is loud?
 
 var a_loop = new Tone.Loop((time) => {
   a.triggerAttackRelease(chords[key[progression[a_note]]].map((g) => g + a_octave), "8n", time);
   a_note = (a_note + 1) % progression.length;
 }, "4n");
+
+a.volume.value = a_volume;
 
 const reverb = new Tone.Reverb(0.3).toDestination();
 a.connect(reverb);
