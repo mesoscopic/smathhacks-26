@@ -1,12 +1,16 @@
 import { play_music } from "./music/main"
 import * as Data from "./data/main"
 
+let mapClicked = false;
+
+/*
 function handleClick(event: MouseEvent): void {
 	console.log("Button clicked!");
 	play_music({ type: "new_data" });
 	// Optional: use the event object, e.g., to prevent default behavior
 	event.preventDefault();
 }
+*/
 
 document.addEventListener('DOMContentLoaded', () => {
 	const button = document.getElementById("myButton");
@@ -81,12 +85,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			return { lat, lon };
 		}
-		console.log(`Latitude: ${pixelToLatLon(originalX, originalY).lat}, Longitude: ${pixelToLatLon(originalX, originalY).lon}`);
+		const latitude = pixelToLatLon(originalX, originalY).lat
+		const longitude = pixelToLatLon(originalX, originalY).lon
 
-		originalCoordsElement.textContent = `Latitude: ${pixelToLatLon(originalX, originalY).lat}, Longitude: ${pixelToLatLon(originalX, originalY).lon}`;
-		// Update display
+		console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+		if (!mapClicked) {
+			mapClicked = true;
+			Data.stream([latitude, longitude], play_music)
+			play_music({ type: "new_data" });
+		}
+
+		originalCoordsElement.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
-	Data.stream([0, 0], play_music)
+	//function moveSubToLocation(): void {}
+
 });
