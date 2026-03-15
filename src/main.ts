@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let isMuted = false;
 	const muteButton = document.getElementById("muteBtn");
 	muteButton.addEventListener('click', function() {
-		if(!isMuted){
+		if (!isMuted) {
 			volume = -50;
 			muteButton.textContent = "Muted";
 		}
@@ -115,32 +115,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function moveSubToLocation(lat: number, long: number, scaleY: number, scaleX: number): void {
+		Data.pollLocation([lat, long]);
+
 		lat = (((90 - lat) / 180) * mapHeight) / scaleY;
-		long = (((long + 180) / 360) * mapWidth) /scaleX;
+		long = (((long + 180) / 360) * mapWidth) / scaleX;
 
 		let currentLeft = parseFloat(marker.style.left) || 0;
 		let currentTop = parseFloat(marker.style.top) || 0;
-		
+
 		const speed = 0.01;
 		console.log(`Current1: ${currentLeft}, current2: ${currentTop}`)
 
 
-		if (true){
+		if (true) {
 			animate()
 		}
-		else{
+		else {
 			marker.style.left = `${long}px`;
-			marker.style.top = `${lat +50}px`;
+			marker.style.top = `${lat + 50}px`;
 		}
 
 		function animate() {
 			// Calculate distance left
-			const deltaTop = (lat+50) - currentTop;
+			const deltaTop = (lat + 50) - currentTop;
 			const deltaLeft = long - currentLeft;
 
 			// Stop if close enough
 			if (Math.abs(deltaTop) < 0.5 && Math.abs(deltaLeft) < 0.5) {
-				marker.style.top = `${lat+50}px`;
+				marker.style.top = `${lat + 50}px`;
 				marker.style.left = `${long}px`;
 				return;
 			}
