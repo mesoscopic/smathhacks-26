@@ -29,8 +29,8 @@ export function play_music(event: Event) {
     Tone.getTransport().start();
   break
   case "dummy":
-    a_octave = (event.random * 8).toPrecision(1);
-    console.log((event.random * 8).toPrecision(1));
+    a_octave = (event.random * 7 + 1).toPrecision(1);
+    console.log((event.random * 7 + 1).toPrecision(1));
   break
   case "location": 
     console.log("Location Event", event.location);
