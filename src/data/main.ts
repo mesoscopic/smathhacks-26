@@ -56,3 +56,8 @@ async function getBuoyPositions() {
 	}
 	console.log(buoyPositions)
 }
+
+export async function getCurrentVector(): Promise<[number, number]> {
+	const strVector = (await (await fetch("/current/" + currentLocation.join(","))).text()).split(",");
+	return [parseFloat(strVector[0]) || 0, parseFloat(strVector[1]) || 0]
+}

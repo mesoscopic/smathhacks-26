@@ -3,6 +3,7 @@
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import requests
 import re
+from datetime import datetime
 
 HOST = "localhost"
 PORT = 8000
@@ -20,6 +21,17 @@ class Server(SimpleHTTPRequestHandler):
             self.send_header("Content-Type", "text/plain")
             self.end_headers()
             self.wfile.write(bytes(get_buoy_data(self.path[6:]), "utf-8"))
+        elif self.path.startswith("/current/"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+
+            rounded_coords = self.path[9:].split(",")
+            lat = round(float(rounded_coords[0])*4+.5)/4-.125
+            lng = round(float(rounded_coords[1])*4+.5)/4-.125
+            vector = currents[(lat, lng)]
+            self.wfile.write(
+                bytes(str(vector[0])+","+str(vector[1]), "utf-8"))
         else:
             super().do_GET()
 
@@ -39,6 +51,16 @@ def get_buoy_data(id):
                                if not line.startswith("#")][0]))
 
 
+print("Downloading ocean current data...")
+currents = {}
+date = datetime.today().strftime('%Y-%m-%d')
+# TODO: dynamically fetch today's data
+for line in (requests.get("https://coastwatch.noaa.gov/erddap/griddap/noaacwBLENDEDNRTcurrentsDaily.csv?u_current%5B(2026-03-13T00:00:00Z):1:(2026-03-13T00:00:00Z)%5D%5B(-89.875):1:(89.875)%5D%5B(-179.875):1:(179.875)%5D,v_current%5B(2026-03-13T00:00:00Z):1:(2026-03-13T00:00:00Z)%5D%5B(-89.875):1:(89.875)%5D%5B(-179.875):1:(179.875)%5D").text.split("\n")[2:-1]):
+    vector = line.split(",")
+    currents[(float(vector[1]), float(vector[2]))] = (
+        float(vector[3]), float(vector[4]))
+
+print("Downloading buoy data...")
 buoy_locations = ""
 html = requests.get("https://www.ndbc.noaa.gov/data/realtime2/").text
 for buoy in [line.split("|") for line in requests
