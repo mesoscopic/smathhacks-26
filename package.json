@@ -9,5 +9,6 @@
   },
   "dependencies": {
     "ts-loader": "^9.5.4"
-  }
+  },
+  "type": "module"
 }
