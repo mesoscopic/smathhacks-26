@@ -13,11 +13,13 @@ function handleClick(event: MouseEvent): void {
 */
 
 document.addEventListener('DOMContentLoaded', () => {
+	/*
 	const button = document.getElementById("myButton");
 	if (button) {
 		// Use addEventListener and pass the function reference
 		button.addEventListener('click', handleClick);
 	}
+	*/
 
 	const image = document.getElementById('targetImage') as HTMLImageElement | null;
 	const displayedCoordsElement = document.getElementById('displayedCoords') as HTMLElement | null;
@@ -100,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		// originalCoordsElement.textContent = `X: ${originalX.toFixed(2)}, Y: ${originalY.toFixed(2)}`;
 	}
 
-	//function moveSubToLocation(): void {}
+	function moveSubToLocation(): void {
+
+
+	}
 
 });
