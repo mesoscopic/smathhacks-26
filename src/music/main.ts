@@ -1,94 +1,89 @@
 import * as Tone from "tone";
-import {Event} from "../data/events";
+import { Event } from "../data/events";
 import { volume } from "../main";
 
-const chords: Record<string,string[]> = {
-  "A": ["A", "C", "E"],
-  "B": ["B", "Db", "F"],
-  "C": ["C", "Eb", "G"],
-  "D": ["D", "F", "A"],
-  "E": ["E", "Gb", "B"],
-  "F": ["F", "Ab", "C"],
-  "G": ["G", "Bb", "D"],
+const chords: Record<string, string[]> = {
+	"A": ["A", "C", "E"],
+	"B": ["B", "Db", "F"],
+	"C": ["C", "Eb", "G"],
+	"D": ["D", "F", "A"],
+	"E": ["E", "Gb", "B"],
+	"F": ["F", "Ab", "C"],
+	"G": ["G", "Bb", "D"],
 }
-var key= ["A", "B", "C", "D", "E", "F", "G"];
+var key = ["A", "B", "C", "D", "E", "F", "G"];
 
-const a = new Tone.PolySynth();
+const chord_synth = new Tone.PolySynth();
 
-var a_note = 0;
-var progression = [0,2,4,2,0,4,6,4];
-var a_tempo = 90;
-var a_octave = "1";
+var chord_progression = [0, 2, 4, 2, 0, 4, 6, 4];
+var chord = 0;
+var octave = 4;
 
-var a_loop = new Tone.Loop((time) => {
-  // a.triggerAttackRelease(chords[key[progression[a_note]]].map((g) => g + a_octave), "8n", time);
-  // 
+var tempo = 90;
 
-  arpeggio(
-    a,
-    chords[key[progression[a_note]]].map((g) => g + a_octave),
-    0.05,
-    time,
-    "4n.",
-  )
-  a_note = (a_note + 1) % progression.length;
-}, "2n");
+var chord_loop = new Tone.Loop((time) => {
+	arpeggio(
+		chord_synth,
+		chords[key[chord_progression[chord]]].map((g) => g + octave),
+		0.15,
+		time,
+		"4n.",
+	)
+	chord = (chord + 1) % chord_progression.length;
+}, "1n");
 
-const reverb = new Tone.Reverb(0.3);
-a.connect(reverb);
-
-// const distortion = new Tone.Distortion(0.3);
-// reverb.connect(distortion);
-
+const vibrato = new Tone.Vibrato(1, 0.05)
+chord_synth.connect(vibrato);
+const reverb = new Tone.Reverb(1.0);
+vibrato.connect(reverb);
+const delay = new Tone.PingPongDelay("3n", 0.25);
+reverb.connect(delay);
+const distortion = new Tone.Distortion(0.15);
+delay.connect(distortion);
 const toneVolume = new Tone.Volume().toDestination();
 reverb.connect(toneVolume);
+distortion.connect(toneVolume);
 
 
 
 
 export function play_music(event: Event) {
-  // console.log("Event Received");
-  switch(event.type) {
-  case "new_data": 
-    a_loop.start()
+	// console.log("Event Received");
+	switch (event.type) {
+		case "new_data":
+			chord_loop.start()
+			Tone.getTransport().bpm.value = tempo;
+			Tone.getTransport().start();
+			break
+		case "dummy":
+			//a_octave = (event.random * 3 + 1).toPrecision(1);
+			toneVolume.volume.value = volume + 10;
+			// console.log((event.random * 3 + 1).toPrecision(1));
+			break
+		case "location":
+			// console.log("Location Event", event.location);
+			break
+		case "buoy":
+			console.log("Buoy event", event.data);
+			tempo = 60 + Math.round(event.data.wavePeriod * 20);
+			Tone.getTransport().bpm.value = tempo;
+			delay.set({ delayTime: "3n" })
 
-  Tone.getTransport().start();
+			key = rotateArray(key, Math.round(event.data.waterTemperature * 10) % 7);
 
-  Tone.getTransport().bpm.value = a_tempo;
-    console.log(a_tempo);
-  break
-  case "dummy":
-    a_octave = (event.random * 3 + 1).toPrecision(1);
-    toneVolume.volume.value = volume;
-    // console.log((event.random * 3 + 1).toPrecision(1));
-  break
-  case "location": 
-    // console.log("Location Event", event.location);
-  break
-  case "buoy":
-    console.log("Buoy event", event.data);
-
-    a_tempo = 60 + Math.round(event.data.wavePeriod * 20);
-
-    console.log(a_tempo);
-
-  Tone.getTransport().bpm.value = a_tempo;
-
-    key = rotateArray(key, Math.round(event.data.waterTemperature * 10) % 7);
-
-    console.log(key);
-  }
+			console.log(key);
+	}
 }
 
 function arpeggio(syn: any, chord: string[], delay: number, time: any, note_len: string) {
-  for (let i = 0; i < chord.length; i++) {
-    syn.triggerAttackRelease(chord[i], note_len, time + (delay * i));
-  }
+	for (let i = 0; i < chord.length; i++) {
+		syn.triggerAttackRelease(chord[i], note_len, time + (delay * i));
+	}
 }
 
 function rotateArray(arr, rotateBy) {
-    const n = arr.length;
-    rotateBy %= n;
+	const n = arr.length;
+	rotateBy %= n;
 
-    return arr.slice(rotateBy).concat(arr.slice(0, rotateBy));
+	return arr.slice(rotateBy).concat(arr.slice(0, rotateBy));
 }
