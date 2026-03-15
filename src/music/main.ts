@@ -29,7 +29,7 @@ var a_loop = new Tone.Loop((time) => {
     chords[key[progression[a_note]]].map((g) => g + a_octave),
     0.05,
     time,
-    "4n",
+    "4n.",
   )
   a_note = (a_note + 1) % progression.length;
 }, "2n");
@@ -67,7 +67,13 @@ export function play_music(event: Event) {
 
     a_tempo = 60 + Math.round(event.data.wavePeriod * 20);
 
+    console.log(a_tempo);
+
   Tone.getTransport().bpm.value = a_tempo;
+
+    key = rotateArray(key, Math.round(event.data.waterTemperature * 10) % 7);
+
+    console.log(key);
   }
 }
 
@@ -75,4 +81,11 @@ function arpeggio(syn: any, chord: string[], delay: number, time: any, note_len:
   for (let i = 0; i < chord.length; i++) {
     syn.triggerAttackRelease(chord[i], note_len, time + (delay * i));
   }
+}
+
+function rotateArray(arr, rotateBy) {
+    const n = arr.length;
+    rotateBy %= n;
+
+    return arr.slice(rotateBy).concat(arr.slice(0, rotateBy));
 }
