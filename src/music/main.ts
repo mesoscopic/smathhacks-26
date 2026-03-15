@@ -16,7 +16,7 @@ var key= ["A", "B", "C", "D", "E", "F", "G"];
 const a = new Tone.PolySynth();
 
 var a_note = 0;
-var progression = [0,1,2,3,4,5,6];
+var progression = [0,2,4,2,0,4,6,4];
 var a_tempo = 90;
 var a_octave = "1";
 
@@ -36,6 +36,9 @@ var a_loop = new Tone.Loop((time) => {
 
 const reverb = new Tone.Reverb(0.3);
 a.connect(reverb);
+
+// const distortion = new Tone.Distortion(0.3);
+// reverb.connect(distortion);
 
 const toneVolume = new Tone.Volume().toDestination();
 reverb.connect(toneVolume);
