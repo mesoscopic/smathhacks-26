@@ -63,3 +63,7 @@ main {
 	transform: translate(-50%, -50%);
 	height: 40px;
 }
+
+canvas {
+	display: block;
+}

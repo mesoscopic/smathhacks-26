@@ -98,3 +98,49 @@ function rotateArray(arr, rotateBy) {
 
 	return arr.slice(rotateBy).concat(arr.slice(0, rotateBy));
 }
+
+const wave = new Tone.Waveform(1024);
+Tone.getDestination().connect(wave);
+
+function update_visualizer() {
+	const wave_data = wave.getValue();
+
+	drawWaveform(wave_data);
+
+	requestAnimationFrame(update_visualizer);
+}
+
+Tone.loaded().then(update_visualizer);
+
+const canvas = document.getElementById('waveform') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d')!;
+
+resizeCanvas(canvas);
+
+function drawWaveform(values): void {
+  const { width, height } = canvas;
+  const barWidth = width / values.length;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = '#FF0000';
+
+  values.forEach((v, i) => {
+    // v should be normalized: -1.0 to 1.0
+    const barHeight = (v+1)/2 * height;
+    ctx.fillRect(
+      i * barWidth,
+      height - barHeight,
+      barWidth - 1,
+      barHeight
+    );
+  });
+}
+
+function resizeCanvas(canvas: HTMLCanvasElement): void {
+  canvas.width = window.innerWidth;
+  canvas.height = 100;
+}
+
+window.addEventListener('resize', () => {
+  resizeCanvas(canvas);
+});
