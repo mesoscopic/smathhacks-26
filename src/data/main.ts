@@ -44,8 +44,11 @@ function pollDummy(location: LatLng) {
 }
 
 async function getBuoyData() {
-	let buoysHTML = await fetch("https://www.ndbc.noaa.gov/data/realtime2/");
-	(await buoysHTML.text()).split("\n").filter((line: string) => line.includes("\.txt")).map((line: string) => line.match(/href=\"([A-Z0-9]+).txt\"/));
+	let buoysHTML = await fetch("/noaa/");
+	let buoyList = (await buoysHTML.text()).split("\n")
+		.filter((line: string) => line.includes("\.txt")).map((line: string) => line.match(/href=\"([A-Z0-9]+).txt\"/));
+	console.log(buoyList);
+
 }
 async function pollNOAA() {
 
