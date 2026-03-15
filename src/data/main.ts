@@ -43,8 +43,8 @@ function pollDummy() {
 	if (dataCallback != null) dataCallback({ type: "dummy", random: Math.random() });
 	setTimeout(pollDummy, DUMMY_POLL_TIME);
 }
-function pollNoaa() {
-	if (dataCallback != null) dataCallback({ type: "buoy", data: getInterpolatedBuoyData(currentLocation) })
+async function pollNoaa() {
+	if (dataCallback != null) dataCallback({ type: "buoy", data: await getInterpolatedBuoyData(currentLocation) })
 	setTimeout(pollNoaa, NOAA_POLL_TIME);
 }
 
