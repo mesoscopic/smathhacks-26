@@ -22,10 +22,6 @@
   </header>
 
   <main>
-    <audio id="bgAudio" loop>
-      <!-- <source src="your-audio-file.mp3" type="audio/mpeg" /> -->
-    </audio>
-
     <section id="map"> <!-- MAP Stuff HERE!! -->
       <div class="classMap">
         <img id="targetImage" src="images/earth.jpg" alt="World Map" usemap="#oceanMap">
@@ -46,9 +42,123 @@
       <h2>About</h2>
       <p>Project created for SMATH HACKS 2026</p>
       <h4>What is it?</h4>
-      <p>This is a project that allows you to listen to procedurally generated music that uses current ocean data.</p>
+      <p>
+        This is a project that allows you to listen to procedurally generated 
+        music that uses current ocean data.
+
+      </p>
     </section>
   </main>
+
+  <div id="chatBubble" class="chat-bubble">💬</div>
+
+<div id="chatWindow" class="chat-window hidden">
+  <div class="chat-header">
+    <span>AI Chatbot</span>
+    <button id="closeChat">×</button>
+  </div>
+  <div class="chat-body">
+    <p> Hey there! What can I help you with today? <br>...</p>
+    <!-- Starts empty (says nothing) -->
+  </div>
+  <div class="chat-footer">
+    <input type="text" id="chatInput" placeholder="Type a message..." disabled />
+    <button id="sendBtn" disabled>Send</button>
+  </div>
+</div>
+
+<style>
+  .chat-bubble {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background-color: #0078ff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+  }
+
+  .chat-window {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1001;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .chat-header {
+    background-color: #0078ff;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    color: #333;
+  }
+
+  .chat-footer {
+    display: flex;
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-footer input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-bottom-left-radius: 10px;
+  }
+
+  .chat-footer button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #0078ff;
+    color: white;
+    cursor: pointer;
+    border-bottom-right-radius: 10px;
+  }
+</style>
+
+<script>
+  const chatBubble = document.getElementById('chatBubble');
+  const chatWindow = document.getElementById('chatWindow');
+  const closeChat = document.getElementById('closeChat');
+
+  chatBubble.addEventListener('mouseover', () => {
+    chatWindow.classList.toggle('hidden');
+  });
+
+  closeChat.addEventListener('click', () => {
+    chatWindow.classList.add('hidden');
+  });
+</script>
 
   <script type="module" src="dist/main.js" defer></script>
 </body>
